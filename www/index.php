@@ -1,3 +1,15 @@
+<?php
+  $mysqli = new mysqli('db', 'dbuser', 't0ps3kr1t', 'demodb');
+
+  if ($_POST['message']) {
+    // TODO: sanitise content before inserting!
+    $stmt = $mysqli->prepare("INSERT INTO messages (message) VALUES (?)");
+    $stmt->bind_param("s", $_POST['message']);
+    $stmt->execute();
+    $stmt->close();
+  }
+?>
+
 <html>
  <head>
   <title>PHP Test</title>
@@ -5,9 +17,12 @@
  <body>
   <h1>Messages</h1>
   <ul>
-    <li>
-      <?php echo htmlspecialchars($_POST['message']) ?>
-    </li>
+    <?php
+      $result = $mysqli->query('SELECT * FROM messages');
+      foreach ($result as $row) {
+        echo "<li>" . htmlspecialchars($row['message']) . "</li>";
+      }
+    ?>
   </ul>
   <p>
     <form action="/" method="post">
@@ -17,3 +32,7 @@
   </p>
  </body>
 </html>
+
+<?php
+  $mysqli->close();
+?>

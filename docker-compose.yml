@@ -2,8 +2,9 @@ version: '3.7'
 
 services:
   web:
-    # https://hub.docker.com/_/php
-    image: php:7.2-apache
+    build:
+      context: .
+      dockerfile: Dockerfile.web
     ports:
       - 8080:80
     volumes:
