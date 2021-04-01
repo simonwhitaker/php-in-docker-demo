@@ -1,5 +1,12 @@
 FROM php:7.4-apache
 
+# php:7.4-apache doesn't have any MySQL client installed by default, so we can't
+# use that image "off the shelf" in our docker-compose.yml, we need to provide
+# our own image. This image builds on top of the php:7.4-apache image (the FROM
+# line above) and just installs the mysqli extension.
+#
+# (Note that php:7.4-apache *does* have the mysqlnd driver installed, so we
+# don't need to add that.)
 RUN docker-php-source extract \
   && docker-php-ext-install mysqli \
   && docker-php-source delete

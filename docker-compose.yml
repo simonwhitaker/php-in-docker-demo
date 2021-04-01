@@ -2,29 +2,52 @@ version: '3.7'
 
 services:
   web:
+    # This service uses a locally-built docker image. See Dockerfile.web for its
+    # "recipe". `docker-compose up` will only build the image if it doesn't
+    # already exist in your local docker image repository. To force a rebuild
+    # (e.g. after changing Dockerfile.web), use `docker-compose up --build`.
     build:
       context: .
       dockerfile: Dockerfile.web
+
+    # Expose port 80 in the container on port 8080 on the host. That means you
+    # can go to http://localhost:8080 on the host, and you'll get the content
+    # served up on port 80 inside the container.
     ports:
       - 8080:80
+
     environment:
       MYSQL_HOSTNAME: db
       MYSQL_DATABASE: demodb
       MYSQL_USER: dbuser
       MYSQL_PASSWORD: t0ps3kr1t
+
+    # Mount our www volume inside the container in Apache's document root
+    # directory, /var/www/html.
     volumes:
       - ./www:/var/www/html
+
   db:
     # https://hub.docker.com/_/mysql
     image: mysql:8.0
+
+    # Configure the MySQL server using environment variables (see docs at
+    # https://hub.docker.com/_/mysql for details.)
     environment:
       MYSQL_ROOT_PASSWORD: r00tpa55w0rd
       MYSQL_DATABASE: demodb
       MYSQL_USER: dbuser
       MYSQL_PASSWORD: t0ps3kr1t
+
+    # Expose port 3306 on localhost, so we can connect to this MySQL instance
+    # from outside our docker containers, e.g. using `mysql` on the command
+    # line, or using a MySQL client app.
     ports:
       - 3306:3306
+
     volumes:
+      # Use a named volume for MySQL's data. The named volume will persist
+      # across runs of the docker container.
       - dbdata:/var/lib/mysql
 
       # When a container is started for the first time, a new database with the
@@ -38,5 +61,6 @@ services:
       # the MYSQL_DATABASE variable.
       - ./sql:/docker-entrypoint-initdb.d
 
+# Declare a named volume for our DB data.
 volumes:
   dbdata:
