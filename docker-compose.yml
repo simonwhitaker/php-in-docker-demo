@@ -7,6 +7,11 @@ services:
       dockerfile: Dockerfile.web
     ports:
       - 8080:80
+    environment:
+      MYSQL_HOSTNAME: db
+      MYSQL_DATABASE: demodb
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: t0ps3kr1t
     volumes:
       - ./www:/var/www/html
   db:

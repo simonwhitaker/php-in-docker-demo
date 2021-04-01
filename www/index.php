@@ -1,5 +1,10 @@
 <?php
-  $mysqli = new mysqli('db', 'dbuser', 't0ps3kr1t', 'demodb');
+  $mysqli = new mysqli(
+    $_ENV['MYSQL_HOSTNAME'],
+    $_ENV['MYSQL_USER'],
+    $_ENV['MYSQL_PASSWORD'],
+    $_ENV['MYSQL_DATABASE']
+  );
 
   if ($_POST['message']) {
     // TODO: sanitise content before inserting!
