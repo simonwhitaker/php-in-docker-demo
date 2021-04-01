@@ -11,4 +11,4 @@ A simple PHP web app project that uses Docker to provide Apache and PHP.
 docker-compose up -d
 ```
 
-Then visit http://localhost:8080
+Then visit http://localhost:8080/
