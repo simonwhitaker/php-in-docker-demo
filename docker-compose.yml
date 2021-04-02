@@ -64,6 +64,14 @@ services:
       # the MYSQL_DATABASE variable.
       - ./sql:/docker-entrypoint-initdb.d
 
+  phpmyadmin:
+    # https://hub.docker.com/_/phpmyadmin
+    image: phpmyadmin:5.1
+    environment:
+      PMA_HOST: db
+    ports:
+      - 8081:80
+
 # Declare a named volume for our DB data.
 volumes:
   dbdata:
