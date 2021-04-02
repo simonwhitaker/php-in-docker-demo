@@ -17,6 +17,9 @@ services:
       - 8080:80
 
     environment:
+      # The containers in a docker-compose file all use the same docker network,
+      # and their hostnames are the names of the services. So this service's
+      # hostname s simply "web", and our db's hostname is "db".
       MYSQL_HOSTNAME: db
       MYSQL_DATABASE: demodb
       MYSQL_USER: dbuser
